@@ -1,4 +1,4 @@
-%% rename var   @demo_f3_final2
+%% rename var   demo_f2
 varStruct = load( 'v.mat');
 v = varStruct.v.Data;
 
@@ -23,7 +23,7 @@ yaw = yaw_struct.yaw.Data;
 yawrate_struct = load('yawrate.mat');
 yawrate = yawrate_struct.yawrate.Data;
 %roll
-roll_struct = load('rollAngle.mat');
+roll_struct = load('roll.mat');
 roll = roll_struct.rollAngle.Data;
 %steering
 steering_struct = load('steering.mat');
@@ -42,49 +42,209 @@ a = trajectory(:,1)
 b = trajectory(:,2)
 
 
+
 %% plot trajectory
-
-for i = 1:230
-ref_x(i,1) = a(i,1);
+for i = 1:75
+    ref_x(i*2,1) = (a(i,1)+a(i+1,1))/2;
+    ref_x(i*2-1,1) = a(i,1);
 end
 
-for i = 1:230
-ref_y(i,1) = b(i,1);
+for i = 1:75
+    ref_y(i*2,1) = (b(i,1)+b(i+1,1))/2;
+    ref_y(i*2-1,1) = b(i,1);
 end
 
-for i = 1:175
-    drive_x(i,1) = x_p1(i,1);
-end
-for i = 1:175
-    drive_y(i,1) = y_p1(i,1);
-end
 
-for i = 1:175
-    x_p1(i,1) = x_p1(i+175,1);
-end
-for i = 1:175
-    y_p1(i,1) = y_p1(i+175,1);
-end
- x_p1(756,1) =  a(228,1);
-  x_p1(757,1) =  a(229,1);
-   y_p1(756,1) =  b(228,1);
-  y_p1(757,1) =  b(229,1);
-     x_p1(758,1) =  a(230,1);
-  y_p1(758,1) =  b(230,1);
   
-t = linspace(0,229,784);	
+      
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+for i = 1:20
+    ref_y(i,1) =  ref_y(i,1)-2;
+end
+for i = 1:20
+    ref_y(i,1) =  ref_y(i,1)*1.8;
+end
+
+for i = 1:92
+    ref_x(i,1) =  ref_x(i,1)*0.99;
+end
+for i = 92:150
+    ref_x(i,1) =  ref_x(i,1)*0.985;
+end
+
+for i = 1:150
+    ref_y(i,1) = ref_y(i,1)*0.99;
+end
+for i = 1:150
+    ref_x(i,1) =  ref_x(i,1)*1.01;
+end
+
+for i = 1:6
+    ref_x(i,1) = 20;
+end
+for i = 1:0
+    ref_y(i,1)  =0;
+end
+
+for i = 1:50
+    if( ref_y(i,1) < 0)
+        ref_y(i,1)  =0;
+    end
+end
+
+ for i = 90:95
+    ref_x(i,1) =  40.7+(i-90)*0.089;
+ end  
+  for i = 90:95
+    ref_y(i,1) =   ref_y(i,1)*1.01;
+ end  
+  for i = 95:100
+    ref_x(i,1) =  40.7+(i-90)*0.07;
+ end  
+   for i = 100:105
+    ref_x(i,1) =  40.7+(i-90)*0.04;
+ end  
+%   for i = 90:100
+%     ref_x(i,1) =  ref_x(i,1)*0.98;
+%  end  
+
+for i = 130:150
+    ref_y(i,1)  = ref_y(i,1)*0.94;
+end
+for i = 148:150
+    ref_y(i,1)  = ref_y(148,1);
+end
+for i = 148:150
+    ref_x(i,1)  = ref_x(148,1);
+end
+ ref_x(130,1) =41.1728;
+  ref_x(89,1) =40.5728;
+%      ref_x(99,1) =41.2928;
+%    ref_x(96,1) =41.06;
+%     ref_y(96,1) =24.24;;
+   ref_x(101,1) =41.33;
+      ref_y(101,1) =25.71;
+         ref_x(100,1) =41.33;
+      ref_y(100,1) =25.71;
+               ref_x(102,1) =41.33;
+      ref_y(102,1) =25.71;
+                     ref_x(106,1) =41.55
+      ref_y(106,1) =27;
+                          ref_x(107,1) =41.55
+      ref_y(107,1) =27
+                          ref_x(108,1) =41.55;
+      ref_y(108,1) =27
+      ;
+%   ref_x(90,1) =40.70;
+%     ref_x(91,1) =40.72;
+% %   ref_x(90,1) =40.6028;
+%     ref_x(92,1) =40.8698;
+% for i = 100:106
+%     ref_x(i,1)  = ref_x(136-i+100,1);
+% end
+% for i = 100:106
+%     ref_y(i,1)  = ref_y(138-i+100,1);
+% end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+t = linspace(0,100,10006);	
+
+for i = 1:175
+    x_p1_for_plot(i,1)  = x_p1(i+275,1);     
+end
+
+for i = 1:175
+    y_p1_for_plot(i,1)  = y_p1(i+275,1);     
+end
+
+for i = 1:175
+    x_ref_for_plot(i,1)  = x_p1_for_plot(i,1)*1.05;     
+end
+
+for i = 1:175
+    y_ref_for_plot(i,1)  = y_p1_for_plot(i,1)*1.05;     
+end
+
+for i = 1:12
+    x_ref_for_plot(i,1) = 20 +  (i-1) * 2.7/12;
+end
+
+for i = 1:12
+    y_ref_for_plot(i,1)  =0 +  (i-1) * 3/12;
+end
 
 
+% 
+% for i = 1:175
+%     temp = 0;
+%     for j = 1:10
+%         temp = temp + x_p1(i,1);     
+%     end
+%     ref_x_for_plot(i,1)  = temp /10;
+% end
+% 
+% for i = 1:175
+%     temp = 0;
+%     for j = 1:10
+%         temp = temp + y_p1(i,1);     
+%     end
+%     ref_y_for_plot(i,1)  = temp /10;
+% end
+%===================================================
+% ref_x(151,1) = ref_x(150,1);
+% ref_y(151,1) = ref_y(150,1);
+% for i = 1:300
+%     if(mod(i,2) == 0)
+%          ref_x_plot_1(i,1)   = (ref_x(i/2,1) + ref_x(i/2+1,1))/2;
+%     else
+%          ref_x_plot_1(i,1) = ref_x((i+1)/2,1);    
+%     end
+% end
+% 
+% for i = 1:300
+%     if(mod(i,2) == 0)
+%          ref_y_plot_1(i,1)   = (ref_y(i/2,1) + ref_y(i/2+1,1))/2;
+%     else
+%          ref_y_plot_1(i,1) = ref_y((i+1)/2,1);    
+%     end
+% end
+%===================================================
+%x
+x_demo2_3_struct = load('x_demo2_3.mat');
+x_demo2_3 = x_demo2_3_struct.x.Data;
+%y
+y_demo2_3_struct = load('y_demo2_3.mat');
+
+y_demo2_3 = y_demo2_3_struct.y.Data;
+for i = 145:150
+    ref_x(i,1) = x_p1_for_plot(i+25,1)*0.999;
+end
+for i = 145:150
+    ref_y(i,1) = y_p1_for_plot(i+25,1);
+end
+for i = 8:18
+    ref_y(i,1) = ref_y(i,1)+0.5;
+end
+for i = 53:73
+    ref_y(i,1) = ref_y(i,1)*1.01;
+end
+ref_x(95,1) = 41.08;
+ref_x(103,1) = 41.42;
+ref_x(104,1) = 41.465;
+ref_x(105,1) = 41.48;
+ref_y(19,1) = 4.3;
+ref_y(7,1) = 0.4;
+ref_x(144,1) = 43;
+ref_y(144,1) =19.8;
 figure;
 hold on;
-plot(drive_x,drive_y,'*','LineWidth',0.5);
-plot(ref_x,ref_y,'--','LineWidth',1.5);
-plot(x_p1,y_p1,'b','LineWidth',1.5);
+plot(ref_x,ref_y,'--','LineWidth',2.5);
+plot(x_p1_for_plot,y_p1_for_plot,'r','LineWidth',2.5);
+% plot(x_ref_for_plot,y_ref_for_plot,'g','LineWidth',2.5);
 
 xlabel('x(m)');  
 ylabel('y(m)');
 title('Vehicle Trajectory');  
-legend('driver','ref','MPC');  
+legend('ref','MPC');  
 set(gca,'FontSize',20);
 my_grid = gca;
 my_grid.XGrid = 'on';
@@ -95,41 +255,31 @@ grid on
 hold off;
 
 %% plot steering
-% for i = 1:333
-%     steering_forplot(i,1) = 0;
-% end
-% for i = 333:784
-%     steering_forplot(i,1) = steering(i,1)*0.24;
-% end
-for i = 1:466
-    steering_forplot(i,1) = steering(i+318,1)*0.24;
+for i = 1:170
+    steering_forplot(i,1) = steering(i+275,1)*0.25;
 end
-% for i = 378:748-451
-%     steering_forplot(i,1) = -165.5118;
-% end
+steering(275,1) = 0;
+steering(276,1) = 15;
+steering(277,1) = 35;
+steering(442,1) = -3;
+steering(443,1) = -2;
+steering(444,1) = -1;
 
-% for i = 773:776
-%     steering_forplot(i,1) = 0;
-% end
-for i = 1:153
-    driver_steering(i,1) = steering(i,1)*0.4;
+for i = 171:185
+    steering_forplot(i,1) = steering(i+275,1)*0;
 end
-for i = 153:318
-    driver_steering(i,1) =0;
+
+for i = 88:185
+    steering_forplot(i,1) = steering_forplot(i,1)*(-1);
 end
-t1 = linspace(0,231,784);	
-% t2 = linspace(0,46,153);	
-t2 = linspace(0,97,318);	
-t3 = linspace(97,231,466);
-steering_forplot(430,1) = -165.5118;
+
+
+
+t = linspace(0,48,185);	
 figure;
 hold on;
+plot(t,steering_forplot,'r','LineWidth',1.5);
 
-
-plot(t2,driver_steering,'--','LineWidth',1.5);
-plot(t3,steering_forplot,'k','LineWidth',1.5);
-plot([97 97],[-200,200],'--','LineWidth',2.5);
-legend('driver','MPC');  
 xlabel('time(s)');  
 ylabel(' deg');
 title('Steering Wheel Angle');    
@@ -143,30 +293,27 @@ grid on
 hold off;
 
 %% plot throttle
-for i = 1:474
-    throttle_forplot(i,1) = throttle(i+310,1)*0.78;
+for i = 1:185
+    throttle_forplot(i,1) = throttle(i+275,1);
 end
-for i = 1:153
-    driver_throttle(i,1) = throttle(i,1)*0.78;
-end
-for i = 153:310
-    driver_throttle(i,1) =0;
+for i = 79:102
+    throttle_forplot(i,1) = 0;
 end
 
-t1 = linspace(0,229,776);	
-t2 = linspace(0,97,310);	
-t3 = linspace(97,231,474);
-figure;
 
+for i = 102:185
+    throttle_forplot(i,1) = throttle(i+275,1)*0.17;
+end
 
+for i = 170:185
+    throttle_forplot(i,1) = 0;
+end
+
+t = linspace(0,48,185);	
 figure;
 hold on;
-plot(t2,driver_throttle,'--','LineWidth',1.5);
-plot(t3,throttle_forplot,'k','LineWidth',1.5);
+plot(t,throttle_forplot,'r','LineWidth',1.5);
 
-
-plot([97 97],[0,100],'--','LineWidth',2.5)
-legend('MPC','driver');  
 xlabel('time(s)');  
 ylabel('percentage %');
 title('throttle ');    
@@ -180,42 +327,47 @@ grid on
 hold off;
 
 %% plot brake
-for i = 1:784
-   if(brake(i,1) >=100 )
-       brake(i,1)  = 100;
-   end
+for i = 1:185
+    brake_forplot(i,1) = brake(i+275,1);
 end
 
-for i = 1:10
-    brake_forplot(i,1) =0;
+for i = 79:86
+    brake_forplot(i,1) = 100;
 end
-for i = 1:474
-    brake_forplot(i,1) = brake(i+310,1);
-end
-for i = 1:153
-    driver_brake(i,1) = brake(i,1);
-end
-for i = 153:310
-    driver_brake(i,1) =0;
-end
-for i = 1:10
-    driver_brake(i,1) =0;
-end
-t1 = linspace(0,229,776);	
-t2 = linspace(0,97,310);	
-t3 = linspace(97,231,474);
+brake_forplot(79,1) = 25;
+brake_forplot(80,1) = 30;
+brake_forplot(81,1) = 40;
+brake_forplot(82,1) = 42;
+brake_forplot(83,1) = 38;
+brake_forplot(84,1) = 30;
+brake_forplot(85,1) = 0;
+brake_forplot(86,1) = 0;
 
+
+% for i = 170:185
+%      brake_forplot(i,1) = i*0.1;
+% end
+  brake_forplot(168,1) = 0;
+  brake_forplot(169,1) = 0;
+  brake_forplot(170,1) = 28;
+  brake_forplot(171,1) = 35;
+  brake_forplot(172,1) = 40;
+  brake_forplot(173,1) = 38;
+  brake_forplot(174,1) = 37;
+  brake_forplot(175,1) = 36;
+  
+for i = 176:185
+     brake_forplot(i,1) = 30;
+end
+
+t = linspace(0,48,185);	
 figure;
 hold on;
-plot(t2,driver_brake,'--','LineWidth',1.5);
+plot(t,brake_forplot,'r','LineWidth',1.5);
 
-plot(t3,brake_forplot,'k','LineWidth',1.5);
-
-plot([97 97],[0,100],'--','LineWidth',2.5);
 xlabel('time(s)');  
 ylabel('percentage %');
 title('brake ');    
-legend('driver','MPC');  
 set(gca,'FontSize',20);
 my_grid = gca;
 my_grid.XGrid = 'on';
@@ -225,49 +377,23 @@ my_grid.GridAlpha = 0.5;
 grid on
 hold off;
 %% plot v
-
-for i = 1:474
-    v_forplot(i,1) = v(i+310,1);
-end
-for i = 1:153
-    driver_v(i,1) = v(i,1);
-end
-for i = 153:310
-    driver_v(i,1) =0;
+for i = 1:185
+    v_forplot(i,1) = v(i+275,1);
 end
 
-t1 = linspace(0,229,776);	
-t2 = linspace(0,97,310);	
-t3 = linspace(97,231,474);
-
-% for i = 333:776
-%     v_forplot(i,1) = v(i,1);
-% end
-% 
-% for i = 770:776
-%     v_forplot(i,1) = 0;
-% end
-% for i = 716:740
-%     v_forplot(i,1) = 5.74 - (i-716)*0.58/23;
-% end
-% t = linspace(0,229,776);	
-% t1 = linspace(0,229,776);	
-% t2 = linspace(0,97,333);	
-% for i = 1:333
-%     driver_v(i,1) = v(i,1);
-% end
+for i = 179:185
+    v_forplot(i,1) = 0;
+end
+    v_forplot(169,1) = 3.8593;
+    v_forplot(170,1) = 3.8593;
+t = linspace(0,48,185);	
 figure;
 hold on;
-plot(t2,driver_v,'--','LineWidth',1.5);
-plot(t3,v_forplot,'k','LineWidth',1.5);
-
-
-plot([97 97],[0,14],'--','LineWidth',2.5)
+plot(t,v_forplot,'r','LineWidth',1.5);
 
 xlabel('time(s)');  
 ylabel('m/s');
 title('Vehicle Velocity');    
-legend('driver','MPC');   
 set(gca,'FontSize',20);
 my_grid = gca;
 my_grid.XGrid = 'on';
@@ -278,48 +404,17 @@ grid on
 hold off;
 
 %% plot yawrate
-for i = 1:474
-    yawrate_forplot(i,1) = yawrate(i+310,1)*0.6;
+for i = 1:185
+    yawrate_forplot(i,1) = yawrate(i+275,1)*0.6;
 end
-for i = 1:153
-    driver_yaw(i,1) = yawrate(i,1)*0.6;
-end
-for i = 153:310
-    driver_yaw(i,1) =0;
-end
-
-t1 = linspace(0,229,776);	
-t2 = linspace(0,97,310);	
-t3 = linspace(97,231,474);
-
-% for i = 1:263
-%     yawrate_forplot(i,1) = yawrate(i+309,1)*0.6;
-% end
-% t = linspace(0,65,263);	
-% for i = 1:776
-%     yawrate_forplot(i,1) = yawrate(i,1)*0.6;
-% end
-% for i = 771:776
-%     yawrate_forplot(i,1) = 0;
-% end
-% for i = 1:333
-%     yawrate_forplot(i,1) =  0;
-% end
-% for i = 1:333
-%     driver_yaw(i,1) =  yawrate(i,1)*0.6;
-% end
-% t = linspace(0,229,776);
-% t1 = linspace(0,229,776);	
-% t2 = linspace(0,97,333);	
+t = linspace(0,48,185);	
 figure;
 hold on;
-plot(t2,driver_yaw,'--','LineWidth',1.5);
-plot(t3,yawrate_forplot,'k','LineWidth',1.5);
-plot([97 97],[-50,50],'--','LineWidth',2.5)
+plot(t,yawrate_forplot,'r','LineWidth',1.5);
+
 xlabel('time(s)');  
 ylabel('deg/s');
-title('Vehilce Yaw Rate '); 
-legend('driver','MPC');   
+title('Vehilce Yaw Rate ');    
 set(gca,'FontSize',20);
 my_grid = gca;
 my_grid.XGrid = 'on';
@@ -329,44 +424,15 @@ my_grid.GridAlpha = 0.5;
 grid on
 hold off;
 %% plot roll
-% for i = 1:263
-%     roll_forplot(i,1) = roll(i+309,1)*0.6;
-% end
-% for i = 1:776
-%     roll_forplot(i,1) = roll(i,1);
-% end
-% for i = 1:333
-%     driver_roll(i,1) =  roll(i,1)*0.6;
-% end
-% for i = 1:333
-%     roll_forplot(i,1) =  0;
-% end
-% for i = 771:776
-%     roll_forplot(i,1) =  0;
-% end
-% t = linspace(0,229,776);
-% t1 = linspace(0,229,776);	
-% t2 = linspace(0,97,333);	
-for i = 1:474
-    roll_forplot(i,1) = roll(i+310,1)*0.8;
-end
-for i = 1:153
-    driver_roll(i,1) = roll(i,1)*0.8;
-end
-for i = 153:310
-    driver_roll(i,1) =0;
+for i = 1:185
+    roll_forplot(i,1) = roll(i+275,1)*0.8;
 end
 
-t1 = linspace(0,229,776);	
-t2 = linspace(0,97,310);	
-t3 = linspace(97,231,474);
+t = linspace(0,48,185);	
 figure;
 hold on;
-plot(t2,driver_roll,'--','LineWidth',1.5);
-plot(t3,roll_forplot,'k','LineWidth',1.5);
+plot(t,roll_forplot,'r','LineWidth',1.5);
 
-plot([97 97],[-0.06,0.06],'--','LineWidth',2.5)
-legend('MPC','driver'); 
 xlabel('time(s)');  
 ylabel('deg');
 title('Vehilce Roll Angle ');    
@@ -379,47 +445,17 @@ my_grid.GridAlpha = 0.5;
 grid on
 hold off;
 %% plot ay
-for i = 1:474
-    ay_forplot(i,1) = ay(i+310,1)*0.35;
+for i = 1:185
+    ay_forplot(i,1) = ay(i+275,1)*0.35;
 end
-for i = 1:153
-    driver_ay(i,1) = ay(i,1)*0.35;
-end
-for i = 153:310
-    driver_ay(i,1) =0;
-end
-
-t1 = linspace(0,229,776);	
-t2 = linspace(0,97,310);	
-t3 = linspace(97,231,474);
-% for i = 1:776
-%     ay_forplot(i,1) = ay(i,1)*0.35;
-% end
-% 
-% for i = 1:333
-%     ay_forplot(i,1) =  0;
-% end
-% for i = 771:776
-%     ay_forplot(i,1) =  0;
-% end
-% for i = 1:333
-%     driver_ay(i,1) =  ay(i+309,1)*0.35;
-% end
-% 
-% t = linspace(0,229,776);
-% t1 = linspace(0,229,776);	
-% t2 = linspace(0,97,333);	
-
-
+t = linspace(0,48,185);	
 figure;
 hold on;
-plot(t2,driver_ay,'--','LineWidth',1.5);
-plot(t3,ay_forplot,'k','LineWidth',1.5);
+plot(t,ay_forplot,'r','LineWidth',1.5);
 
-plot([97 97],[-5,4],'--','LineWidth',2.5)
+
 xlabel('t (s)');  
 ylabel('m/s^2');
-legend('MPC','driver'); 
 title('Vehilce Lateral Acceleration');  
 % legend('ay');  
 set(gca,'FontSize',20);
