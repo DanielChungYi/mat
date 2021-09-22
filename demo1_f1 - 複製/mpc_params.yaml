@@ -1,0 +1,28 @@
+# Parameters for control loop
+debug_info: true
+delay_mode: true
+max_speed: 30.0 # unit: m/s 
+waypoints_dist: -1.0 # unit: m, set < 0 means computed by node
+controller_freq: 10
+local_path_len: 20
+vehicle_Lf: 1.770 # distance between the front of the vehicle and its center of gravity
+
+# Parameter for MPC solver
+mpc_steps: 10.0
+mpc_ref_cte: 0.0
+mpc_ref_epsi: 0.0
+mpc_ref_vel: 5.0
+mpc_w_cte: 6000.0
+mpc_w_epsi: 3000.0
+mpc_w_vel: 3000.0
+mpc_w_delta: 12000.0
+mpc_w_accel: 4000.0
+mpc_w_delta_d: 15000.0
+mpc_w_accel_d: 12000.0
+mpc_w_delta_speed: 900.0
+mpc_max_steering: 0.4361 # Maximal steering radian (~25 deg)
+mpc_max_throttle: 1.0 # Maximal throttle accel
+mpc_bound_value: 10000.0 # Bound value for other variables
+mpc_t_safe: 0.4
+mpc_dis_def: 3.0
+mpc_max_decc: 9.81
